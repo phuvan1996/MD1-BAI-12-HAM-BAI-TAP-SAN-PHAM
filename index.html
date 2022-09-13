@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1 style="text-align: center">--------------QUẢN LÝ SẢN PHẨM------------- </h1>
+<label id="validate"></label><br>
+<input type="text" id="NewProduct">
+<button onclick="addProDuct()">add </button>
+<input type="text " id="search" oninput="actionSearch()">
+<button onclick="actionSearch()"> Search</button>
+<table border="1" style="width: 100%;">
+    <tr>
+        <th>STT</th>
+        <th>TÊN SẢN PHẨM</th>
+        <th>EDIT</th>
+        <th>DELETE</th>
+    </tr>
+    <tbody id="drawTable"></tbody>
+</table>
+<script>
+    let tenSanPham=['sony Xperia','samsung galaxy']
+    function showlistProduct(){
+        let drawTable = '';
+        for (let i = 0; i <tenSanPham.length ; i++) {
+            drawTable += `<tr>
+                           <td>${i+1}</td>
+                           <td>${tenSanPham[i]}</td>
+                          <td><button onclick="updateProduct(${i})"> edit</button></td>
+                           <td><button onclick="deleteProduct(${i})">delete</button></td>
+                           </tr>`
+        }
+        document.getElementById("drawTable").innerHTML=drawTable;
+    }
+    showlistProduct();
+    function addProDuct(){
+        let newProduct=document.getElementById('NewProduct').value;
+        if(newProduct.trim()===''){
+            document.getElementById('validate').innerHTML='<label>vui lòng nhập tên sản phẩm</label>'
+        }else {
+            tenSanPham.push(newProduct);
+            document.getElementById('validate').innerHTML='<label>thêm sản phẩm thành công</label>'
+            showlistProduct();
+            console.log(newProduct)
+        }
+    }
+    function updateProduct(id){
+        let updateProduct = prompt('enter the new product'+tenSanPham[id])
+        if (updateProduct.trim()===''){
+            document.getElementById('validate').innerHTML='<label>The name is required! Please try again!</label>'
+        }else {
+            if (updateProduct===tenSanPham[id]){
+                document.getElementById('validate').innerHTML='<lable>The name is required! Please try again!</lable>'
+            }else {
+                tenSanPham[id]=updateProduct;
+                document.getElementById('validate').innerHTML='<lable>Edit success</lable>'
+                showlistProduct()
+            }
+        }
+
+        }
+        function deleteProduct(id){
+        if (confirm('bạn có muốn xoá?')){
+            tenSanPham.splice(id,1)
+            document.getElementById('validate').innerHTML='<lable>Delete success</lable>'
+            showlistProduct();
+        }else {
+            document.getElementById('validate').innerHTML='<lable></lable>'
+        }
+        }
+        let productSearch=[];
+    function  actionSearch(){
+        productSearch = [];
+        let search = document.getElementById('search').value;
+        if (search.trim()===''){
+            showlistProduct();
+            return
+        }else {
+            for (let i = 0; i <tenSanPham.length ; i++) {
+                if (tenSanPham[i].search(search)!=-1){
+                    productSearch.push(tenSanPham[i])
+                }
+            }
+        }showlistproductSearch()
+    }
+    function showlistproductSearch(){
+        let drawTable = '';
+        for (let i = 0; i <productSearch.length ; i++) {
+            drawTable += `<tr>
+                           <td>${i + 1}</td>
+                           <td>${productSearch[i]}</td>
+                          <td><button onclick="updateProduct(${i})"> edit</button></td>
+                           <td><button onclick="deleteProduct(${i})">delete</button></td>
+                           </tr>`
+        }document.getElementById('drawTable').innerHTML=drawTable
+    }
+</script>
+</body>
+</html>
